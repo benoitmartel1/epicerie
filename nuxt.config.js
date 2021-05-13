@@ -3,7 +3,7 @@ export default {
   head: {
     title: "epicerie",
     htmlAttrs: {
-      lang: "en"
+      lang: "fr"
     },
     meta: [
       { charset: "utf-8" },
@@ -25,7 +25,9 @@ export default {
       }
     ]
   },
-
+  env: {
+    baseUrl: process.env.BASE_URL || "http://localhost:3000"
+  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["element-ui/lib/theme-chalk/index.css"],
 
@@ -34,9 +36,9 @@ export default {
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
-  env: {
-    baseUrl: process.env.BASE_URL || "http://localhost:3000"
-  },
+  //   env: {
+  //     baseUrl: process.env.BASE_URL || "http://localhost:3000"
+  //   },
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: ["@nuxtjs/dotenv"],
   // Modules: https://go.nuxtjs.dev/config-modules
