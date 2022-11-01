@@ -66,20 +66,21 @@ export default {
   async fetch() {
     console.log("fetching");
     this.list = await this.$db
-      .from("list")
-      .select("id, status, inserted_at, product:products(name, id)")
+      .from("epicerie_list")
+      .select("id, status, inserted_at, product:epicerie_products(name, id)")
       .order("status", { ascending: false })
       .order("inserted_at", { ascending: false })
       .then(res => {
         return res.data;
       });
     this.products = await this.$db
-      .from("products")
+      .from("epicerie_products")
       .select("id, name")
       .order("name", { ascending: true })
       .then(res => {
         return res.data;
       });
+    console.log(this.list);
   },
   fetchOnServer: false,
   watch: {
@@ -98,7 +99,7 @@ export default {
       })
       .subscribe();
     const productsSub = this.$db
-      .from("products")
+      .from("epicerie_products")
       .on("DELETE", payload => {
         console.log(payload);
         this.$fetch();
@@ -127,7 +128,7 @@ export default {
       //Fake entry to be fast
       this.list.unshift({ status: 1, product: item });
       const { data, error } = await this.$db
-        .from("list")
+        .from("epicerie_list")
         .insert([{ product: item.id, status: 1 }]);
 
       //this.reload();
@@ -137,7 +138,7 @@ export default {
       item.status = item.status ? 0 : 1;
 
       const { data, error } = await this.$db
-        .from("list")
+        .from("epicerie_list")
         .update({ status: item.status })
         .eq("id", item.id);
       //   this.reload();
@@ -147,7 +148,7 @@ export default {
       this.list.splice(index, 1);
 
       const { data, error } = await this.$db
-        .from("list")
+        .from("epicerie_list")
         .delete()
         .eq("id", item.id);
     },
@@ -155,7 +156,7 @@ export default {
       //Fake entry to be fast
       this.suggestions.splice(index, 1);
       const { data, error } = await this.$db
-        .from("products")
+        .from("epicerie_products")
         .delete()
         .eq("id", item.id);
     },
@@ -177,7 +178,7 @@ export default {
     async createItem(name) {
       //Fake entry to be fast
       const { data, error } = await this.$db
-        .from("products")
+        .from("epicerie_products")
         .insert([{ name: name.toLowerCase() }]);
       if (data) {
         console.log("adding");
@@ -197,7 +198,7 @@ export default {
       //Fake entry to be fast
       this.list = this.list.filter(item => item.status == 1);
       const { data, error } = await this.$db
-        .from("list")
+        .from("epicerie_list")
         .delete()
         .eq("status", 0);
     },
